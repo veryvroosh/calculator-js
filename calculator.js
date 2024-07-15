@@ -7,10 +7,14 @@ function operate(n1, op, n2) {
         case "+": return Math.round((n1+n2) * 100) / 100;
         case "-": return n1-n2;
         case "*": return n1*n2;
-        case "/": return Math.round((n1/n2) * 100) / 100;
+        case "/": {
+            if(Number(n2) === 0) {return "BOMMBOOOCLAT";}
+            return Math.round((n1/n2) * 100) / 100;
+        }
         default: return "invalid operation";
     }
 }
+
 
 const display = document.querySelector("#display");
 const numbers = document.querySelectorAll(".numbers");
@@ -20,12 +24,21 @@ const equal = document.querySelector("#equal");
 const _delete = document.querySelector("#delete");
 const clear = document.querySelector("#clear");
 
+let opFlag = false;
+let equalFlag = false;
+
 numbers.forEach(number => number.addEventListener('click', () => {
     console.log(`${Number(number.name)}`);
 
-
-    if (op) {
+    if(equalFlag === true) {
         display.textContent = ``;
+        equalFlag = false;
+    }
+
+
+    if (op && opFlag === true) {
+        display.textContent = ``;
+        opFlag = false;
     }
 
     display.textContent += `${number.name}`
@@ -40,14 +53,18 @@ numbers.forEach(number => number.addEventListener('click', () => {
 
 }));
 
-let opFlag = false;
 operators.forEach(operator => operator.addEventListener('click', () => {
     console.log(`${operator.name}`)
     operator.style.cssText = "background-color: blue;"
 
+    if(equalFlag === false) {
+        op = operator.name;
+    }
+
     if(!n2) {
         n1 = Number(display.textContent);
         op = operator.name;
+        opFlag = true;
     } else {
         n1 = operate(n1, op, n2);
         display.textContent = `${n1}`
@@ -61,6 +78,8 @@ decimal.addEventListener('click', () => {
 
 equal.addEventListener('click', () => {
    display.textContent = operate(n1, op, n2);
+   n2 = null;
+   equalFlag = true;
 });
 
 _delete.addEventListener('click', () => {
@@ -72,4 +91,8 @@ clear.addEventListener('click', () => {
     op = null;
     n2 = null;
    display.textContent = "";
+
+   operators.forEach(operator => {
+       operator.style.cssText = "background-color: white;";
+   });
 });
