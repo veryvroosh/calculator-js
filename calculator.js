@@ -1,11 +1,13 @@
-let n1, n2, op;
+let n1 = null;
+let op = null;
+let n2 = null;
 
 function operate(n1, op, n2) {
     switch(op) {
         case "+": return n1+n2;
         case "-": return n1-n2;
         case "*": return n1*n2;
-        case "/": return n1/n2;
+        case "/": return Math.round((n1/n2) * 100) / 100;
         default: return "invalid operation";
     }
 }
@@ -18,24 +20,37 @@ const clear = document.querySelector("#clear");
 
 numbers.forEach(number => number.addEventListener('click', () => {
     console.log(`${Number(number.name)}`);
+
+
+    if (op) {
+        display.textContent = ``;
+    }
+
     display.textContent += `${number.name}`
 
+    if(op) {
+        n2 = Number(display.textContent);
+    }
 
+    operators.forEach(operator => {
+       operator.style.cssText = "background-color: white;";
+    });
 
 }));
 
+let opFlag = false;
 operators.forEach(operator => operator.addEventListener('click', () => {
     console.log(`${operator.name}`)
+    operator.style.cssText = "background-color: blue;"
 
     if(!n2) {
         n1 = Number(display.textContent);
         op = operator.name;
     } else {
         n1 = operate(n1, op, n2);
+        display.textContent = `${n1}`
         n2 = null;
     }
-
-    display.textContent += `${operator.name}`;
 }));
 
 equal.addEventListener('click', () => {
@@ -43,5 +58,8 @@ equal.addEventListener('click', () => {
 });
 
 clear.addEventListener('click', () => {
+    n1 = null;
+    op = null;
+    n2 = null;
    display.textContent = "";
 });
