@@ -23,9 +23,11 @@ const decimal = document.querySelector("#decimal");
 const equal = document.querySelector("#equal");
 const _delete = document.querySelector("#delete");
 const clear = document.querySelector("#clear");
+const misc = document.querySelectorAll(".misc-buttons");
 
 let opFlag = false;
 let equalFlag = false;
+
 
 numbers.forEach(number => number.addEventListener('click', () => {
     console.log(`${Number(number.name)}`);
@@ -41,21 +43,23 @@ numbers.forEach(number => number.addEventListener('click', () => {
         opFlag = false;
     }
 
-    display.textContent += `${number.name}`
+    if (display.textContent.length < 12) {
+        display.textContent += `${number.name}`
+    }
 
     if(op) {
         n2 = Number(display.textContent);
     }
 
     operators.forEach(operator => {
-       operator.style.cssText = "background-color: white;";
+       operator.style.cssText = "background-color: #B3E9C7;";
     });
 
 }));
 
 operators.forEach(operator => operator.addEventListener('click', () => {
     console.log(`${operator.name}`)
-    operator.style.cssText = "background-color: blue;"
+    operator.style.cssText = "background-color: #F0FFF1;"
 
     if(equalFlag === false) {
         op = operator.name;
@@ -73,7 +77,9 @@ operators.forEach(operator => operator.addEventListener('click', () => {
 }));
 
 decimal.addEventListener('click', () => {
-   display.textContent += ".";
+    if(!display.textContent.includes(".")) {
+        display.textContent += ".";
+    }
 });
 
 equal.addEventListener('click', () => {
@@ -93,6 +99,24 @@ clear.addEventListener('click', () => {
    display.textContent = "";
 
    operators.forEach(operator => {
-       operator.style.cssText = "background-color: white;";
+       operator.style.cssText = "background-color: #B3E9C7;";
    });
 });
+
+
+
+numbers.forEach(number => number.addEventListener('mousedown', () => {
+    number.style.cssText = "background-color: #F0FFF1;";
+}));
+
+numbers.forEach(number => number.addEventListener('mouseup', () => {
+    number.style.cssText = "background-color: #B3E9C7;";
+}));
+
+misc.forEach(button => button.addEventListener('mousedown', () => {
+    button.style.cssText = "background-color: #F0FFF1;";
+}));
+
+misc.forEach(button => button.addEventListener('mouseup', () => {
+    button.style.cssText = "background-color: #B3E9C7;";
+}));
