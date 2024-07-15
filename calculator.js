@@ -4,7 +4,7 @@ let n2 = null;
 
 function operate(n1, op, n2) {
     switch(op) {
-        case "+": return n1+n2;
+        case "+": return Math.round((n1+n2) * 100) / 100;
         case "-": return n1-n2;
         case "*": return n1*n2;
         case "/": return Math.round((n1/n2) * 100) / 100;
@@ -15,7 +15,9 @@ function operate(n1, op, n2) {
 const display = document.querySelector("#display");
 const numbers = document.querySelectorAll(".numbers");
 const operators = document.querySelectorAll(".operators");
+const decimal = document.querySelector("#decimal");
 const equal = document.querySelector("#equal");
+const _delete = document.querySelector("#delete");
 const clear = document.querySelector("#clear");
 
 numbers.forEach(number => number.addEventListener('click', () => {
@@ -53,8 +55,16 @@ operators.forEach(operator => operator.addEventListener('click', () => {
     }
 }));
 
+decimal.addEventListener('click', () => {
+   display.textContent += ".";
+});
+
 equal.addEventListener('click', () => {
    display.textContent = operate(n1, op, n2);
+});
+
+_delete.addEventListener('click', () => {
+   display.textContent = display.textContent.slice(0, -1);
 });
 
 clear.addEventListener('click', () => {
